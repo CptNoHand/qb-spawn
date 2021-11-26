@@ -9,13 +9,13 @@
     position: absolute;
     top: 10vh;
     left: 10vh;
-    background: linear-gradient(-45deg, #351c1ca1, #2b1010ab,#270505a6,#2c0808a1,#290202b0);
+    background: linear-gradient(-45deg, #1c3534a1, #102b29ab,#052627a6,#082b2ca1,#022829b0);
     background-size: 400% 400%;
     border-radius: .8vh;
     padding: 30px;
     border-top: 4px solid;
     border-bottom: 4px solid;
-    border-image: linear-gradient(var(--angle), #dc143c,#c3252500,#c3252500,#c3252500,#dc143c) 1;
+    border-image: linear-gradient(var(--angle), #14d5dc,#25bec300,#25b9c300,#c3252500,#14dcbb) 1;
     animation:5s rotate linear infinite, shake-slow2 30s ease-in-out infinite;
 }
 
