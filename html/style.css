@@ -40,7 +40,7 @@
 
 .location:hover {
     border: 2px solid;
-    border-image: linear-gradient(var(--angle), #dc143c,#c3252500,#c3252500,#c3252500,#dc143c) 1;
+    border-image: linear-gradient(var(--angle), #14d5dc,#25abc300,#25c3ae00,#25bec300,#14dccb) 1;
     animation: blinkxd 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite,5s rotate linear infinite, shake-slow2 30s ease-in-out infinite;
     background-color: rgb(0, 0, 0, 0.3);
     transition: 0.2s;
@@ -48,10 +48,10 @@
 
 .selected {
     border: 3px solid;
-    border-image: linear-gradient(var(--angle), #dc143c,#c3252500,#c3252500,#c3252500,#dc143c) 1;
+    border-image: linear-gradient(var(--angle), #14cfdc,#25a3c300,#25b9c300,#25a3c300,#14cfdc) 1;
     animation: blinkxd 5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite,8s rotate linear infinite, shake-slow1 10s ease-in-out infinite;
     background-color: rgb(0, 0, 0, 0.3);
-    box-shadow: 0 0 10px #ff0c0c8f !important;
+    box-shadow: 0 0 10px #0cefff8f !important;
 }
 
 .submit-spawn {
@@ -62,8 +62,8 @@
     margin-bottom: .75vh;
     transition: 0.2s;
     border-radius: .3vh;
-    box-shadow: 0 0 10px #ff0c0c8f !important;
-    background: linear-gradient(-45deg, #be4b62c2, #bb324ec9,#a71b37c0,#d3163cc4,#ff0033c4);
+    box-shadow: 0 0 10px #0ce3ff8f !important;
+    background: linear-gradient(-45deg, #4bb1bec2, #32bbbbc9,#1b9ea7c0,#16d3bac4,#00fff2c4);
     background-size: 400% 400%;
 }
 
@@ -83,11 +83,11 @@
 
     border:2px solid black;
     box-shadow: 0 0 30px #0cffe38f !important;
-    background-color: rgb(190, 0, 0);
+    background-color: rgb(0, 190, 174);
     transition: 0.2s;
-    background: linear-gradient(-45deg, #be4b62c2, #bb324ec9,#a71b37c0,#d3163cc4,#ff0033c4);
+    background: linear-gradient(-45deg, #4bbeb8c2, #32b2bbc9,#1ba7a0c0,#16d3b3c4,#00ffbfc4);
     background-size: 400% 400%;
-    border-image: linear-gradient(var(--angle), #dc143c,#c3252500,#c3252500,#c3252500,#dc143c) 1;
+    border-image: linear-gradient(var(--angle), #14bedc,#25abc300,#25b1c300,#25b1c300,#14dcc1) 1;
 }
 
 #spawn-label {
