@@ -3,7 +3,7 @@
 .container {
     font-family: 'Poppins', sans-serif;
 }
- 
+
 .spawn-locations {
     text-transform: uppercase;
     position: absolute;
@@ -27,7 +27,6 @@
     transition: 0.2s;
     transition: .1s linear;
     border-radius: .3vh;
-
 }
 
 .location > p {
