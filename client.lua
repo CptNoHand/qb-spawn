@@ -158,6 +158,7 @@ local function PostSpawnPlayer(ped)
     SetEntityVisible(PlayerPedId(), true)
     Wait(500)
     DoScreenFadeIn(250)
+    TriggerServerEvent('qb-walkstyles:server:walkstyles', 'get')
 end
 
 RegisterNUICallback('spawnplayer', function(data)
@@ -186,7 +187,6 @@ RegisterNUICallback('spawnplayer', function(data)
         TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
         TriggerEvent('QBCore:Client:OnPlayerLoaded')
         PostSpawnPlayer()
-        TriggerServerEvent('qb-walkstyles:server:walkstyles', 'get')
     elseif type == "house" then
         PreSpawnPlayer()
         TriggerEvent('qb-houses:client:enterOwnedHouse', location)
@@ -195,7 +195,6 @@ RegisterNUICallback('spawnplayer', function(data)
         TriggerServerEvent('qb-houses:server:SetInsideMeta', 0, false)
         TriggerServerEvent('qb-apartments:server:SetInsideMeta', 0, 0, false)
         PostSpawnPlayer()
-        TriggerServerEvent('qb-walkstyles:server:walkstyles', 'get')
     elseif type == "normal" then
         local pos = QB.Spawns[location].coords
         PreSpawnPlayer()
