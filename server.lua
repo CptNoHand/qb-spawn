@@ -6,9 +6,9 @@ QBCore.Functions.CreateCallback('qb-spawn:server:getOwnedHouses', function(sourc
         if houses[1] ~= nil then
             cb(houses)
         else
-            cb(nil)
+            cb({})
         end
     else
-        cb(nil)
+        cb({})
     end
 end)
