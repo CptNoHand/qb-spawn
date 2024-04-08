@@ -11,18 +11,11 @@ local cam, cam2 = nil, nil
 -- Functions
 
 local function SetDisplay(bool)
-    local translations = {}
-    for k in pairs(Lang.fallback and Lang.fallback.phrases or Lang.phrases) do
-        if k:sub(0, #'ui.') then
-            translations[k:sub(#'ui.' + 1)] = Lang:t(k)
-        end
-    end
     choosingSpawn = bool
     SetNuiFocus(bool, bool)
     SendNUIMessage({
-        action = "showUi",
-        status = bool,
-        translations = translations
+        type = "ui",
+        status = bool
     })
 end
 
@@ -64,14 +57,12 @@ RegisterNetEvent('qb-spawn:client:setupSpawns', function(cData, new, apps)
                 action = "setupLocations",
                 locations = QB.Spawns,
                 houses = myHouses,
-                isNew = new
             })
         end, cData.citizenid)
     elseif new then
         SendNUIMessage({
             action = "setupAppartements",
             locations = apps,
-            isNew = new
         })
     end
 end)
@@ -81,7 +72,7 @@ end)
 RegisterNUICallback("exit", function(data)
     SetNuiFocus(false, false)
     SendNUIMessage({
-        action = "showUi",
+        type = "ui",
         status = false
     })
     choosingSpawn = false
