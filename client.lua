@@ -52,9 +52,11 @@ RegisterNetEvent('qb-spawn:client:setupSpawns', function(cData, new, apps)
             local myHouses = {}
             if houses ~= nil then
                 for i = 1, (#houses), 1 do
+                    local house = houses[i]
+
                     myHouses[#myHouses+1] = {
-                        house = houses[i].house,
-                        label = Config.Houses[houses[i].house].adress,
+                        house = house,
+                        label = (house.apartment or house.street) .. " " .. house.property_id,
                     }
                 end
             end
@@ -134,22 +136,25 @@ RegisterNUICallback('setCam', function(data)
     end
 end)
 
-RegisterNUICallback('chooseAppa', function(data)
+RegisterNUICallback('chooseAppa', function(data, cb)
     local ped = PlayerPedId()
     local appaYeet = data.appType
     SetDisplay(false)
     DoScreenFadeOut(500)
-    Wait(5000)
-    TriggerServerEvent("apartments:server:CreateApartment", appaYeet, Apartments.Locations[appaYeet].label)
-    TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
-    TriggerEvent('QBCore:Client:OnPlayerLoaded')
+    Wait(100)
     FreezeEntityPosition(ped, false)
-    RenderScriptCams(false, true, 500, true, true)
+    RenderScriptCams(false, true, 0, true, true)
     SetCamActive(cam, false)
     DestroyCam(cam, true)
     SetCamActive(cam2, false)
     DestroyCam(cam2, true)
     SetEntityVisible(ped, true)
+    Wait(500)
+    TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
+    TriggerEvent('QBCore:Client:OnPlayerLoaded')
+    Wait(100)
+    TriggerServerEvent("ps-housing:server:createNewApartment", appaYeet)
+    cb('ok')
 end)
 
 local function PreSpawnPlayer()
@@ -171,40 +176,34 @@ local function PostSpawnPlayer(ped)
     TriggerServerEvent('qb-walkstyles:server:walkstyles', 'get')
 end
 
-RegisterNUICallback('spawnplayer', function(data)
+RegisterNUICallback('spawnplayer', function(data, cb)
     local location = tostring(data.spawnloc)
     local type = tostring(data.typeLoc)
     local ped = PlayerPedId()
     local PlayerData = QBCore.Functions.GetPlayerData()
     local insideMeta = PlayerData.metadata["inside"]
-
     if type == "current" then
         PreSpawnPlayer()
-        QBCore.Functions.GetPlayerData(function(PlayerData)
-            SetEntityCoords(PlayerPedId(), PlayerData.position.x, PlayerData.position.y, PlayerData.position.z)
-            SetEntityHeading(PlayerPedId(), PlayerData.position.a)
-            FreezeEntityPosition(PlayerPedId(), false)
+        QBCore.Functions.GetPlayerData(function(pd)
+            ped = PlayerPedId()
+            SetEntityCoords(ped, pd.position.x, pd.position.y, pd.position.z)
+            SetEntityHeading(ped, pd.position.a)
+            FreezeEntityPosition(ped, false)
         end)
-
-        if insideMeta.house ~= nil then
-            local houseId = insideMeta.house
-            TriggerEvent('qb-houses:client:LastLocationHouse', houseId)
-        elseif insideMeta.apartment.apartmentType ~= nil or insideMeta.apartment.apartmentId ~= nil then
-            local apartmentType = insideMeta.apartment.apartmentType
-            local apartmentId = insideMeta.apartment.apartmentId
-            TriggerEvent('qb-apartments:client:LastLocationHouse', apartmentType, apartmentId)
-        end
         TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
         TriggerEvent('QBCore:Client:OnPlayerLoaded')
+        if insideMeta.property_id ~= nil then
+            local property_id = insideMeta.property_id
+            TriggerServerEvent('ps-housing:server:enterProperty', tostring(property_id))
+        end
         PostSpawnPlayer()
         TriggerServerEvent('qb-walkstyles:server:walkstyles', 'get')
     elseif type == "house" then
         PreSpawnPlayer()
-        TriggerEvent('qb-houses:client:enterOwnedHouse', location)
         TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
         TriggerEvent('QBCore:Client:OnPlayerLoaded')
-        TriggerServerEvent('qb-houses:server:SetInsideMeta', 0, false)
-        TriggerServerEvent('qb-apartments:server:SetInsideMeta', 0, 0, false)
+        local property_id = data.spawnloc.property_id
+        TriggerServerEvent('ps-housing:server:enterProperty', tostring(property_id))
         PostSpawnPlayer()
         TriggerServerEvent('qb-walkstyles:server:walkstyles', 'get')
     elseif type == "normal" then
@@ -213,14 +212,13 @@ RegisterNUICallback('spawnplayer', function(data)
         SetEntityCoords(ped, pos.x, pos.y, pos.z)
         TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
         TriggerEvent('QBCore:Client:OnPlayerLoaded')
-        TriggerServerEvent('qb-houses:server:SetInsideMeta', 0, false)
-        TriggerServerEvent('qb-apartments:server:SetInsideMeta', 0, 0, false)
-        Wait(500)
+        TriggerServerEvent('ps-housing:server:resetMetaData')
         SetEntityCoords(ped, pos.x, pos.y, pos.z)
         SetEntityHeading(ped, pos.w)
         PostSpawnPlayer()
         TriggerServerEvent('qb-walkstyles:server:walkstyles', 'get')
     end
+    cb('ok')
 end)
 
 -- Threads
